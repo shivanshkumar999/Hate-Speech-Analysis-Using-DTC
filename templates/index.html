@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Hate Speech Analyzer</title>
+        
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <style>
+            body{
+                text-align: center;
+            }
+
+            .info{
+                /* position: absolute; */
+                width: 100%;
+            }
+            form{
+                width: 75%;
+                margin: auto;
+            }
+            button{
+                width: 100%;
+            }
+            .fixed-bottom{
+                padding: 10px;
+            }
+        </style>
+    </head>
+    <body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md">
+                <div class="jumbotron">
+                    <h1>Hate Speech Analyzer</h1>
+                </div>
+                <form action="/predict" enctype="multipart/form-data" method="post">
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-lg" name="inp_data" placeholder="Enter the text" required><br>
+                        <button type="submit" value="Detect" class="btn btn-dark">Detect</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md">
+                    <div class="output">
+                        {% with msgs = get_flashed_messages() %}
+                            {% if msgs or inp_data %}
+                                {% for msg in msgs %}
+                                    <p><b>Input Text</b>: {{ inp_data }}</p>
+                                    {% if msg == "No Hate and No offensive Speech" %}
+                                        <p>Your speech is <span style="color: green; font-weight: bolder;">{{ msg }}</span></p>
+                                    {% elif msg == "Offensive Speech" %}
+                                        <p>Your speech is <span style="color: red; font-weight: bolder;">{{ msg }}</span></p>
+                                    {% elif msg == "Hate Speech" %}
+                                        <p>Your speech is <span style="color: red; font-weight: bolder;">{{ msg }}</span></p>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md">
+                    <div class="fixed-bottom">
+                        <p>Model made using : <b>Decision Tree Classifier.</b></p>
+                        <p>Accuracy of Model : <b>87.26</b>% accurate.</p>
+                        <p>Your speech could be either <span style="color: green; font-weight: bolder;">Neither Hate nor offensive</span>,<span style="color: red; font-weight: bolder;">{{ msg }}Offensive</span> or <span style="color: red; font-weight: bolder;">{{ msg }}Hate Speech.</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
